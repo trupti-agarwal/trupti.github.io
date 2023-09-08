@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Image Viewer</title>
+    <style>
+        .canvas-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 350px;
+            aspect-ratio: 2/0.5;
+        }
+    </style>
+</head>
+<body>
+    <div id="slider-container">
+        <h1>Change Background Color</h1>
+        <input type="range" id="color-slider" min="0" max="255" value="0">
+    </div>
+
+    <script>
+        const body = document.body;
+        const colorSlider = document.getElementById('color-slider');
+
+        colorSlider.addEventListener('input', () => {
+            const red = colorSlider.value;
+            const green = 255 - red; // Calculate the complementary green value
+            const blue = 255;
+            const backgroundColor = `rgb(${red}, ${green}, ${blue})`;
+            body.style.backgroundColor = backgroundColor;
+        });
+    </script>
+    
+    <input type="file" id="fileInput" multiple>
+    <button id="prevButton" onclick="showPreviousImage()"><</button>
+    <button id="nextButton" onclick="showNextImage()">></button>
+    <div class="canvas-container">
+        <img id="image-display" src="" alt="Image" width="400" height="350">
+    </div>
+
+    <script>
+        let images = [];
+        let currentIndex = 0;
+        const imageDisplay = document.getElementById('image-display');
+        const fileInput = document.getElementById('fileInput');
+
+        function showImage(index) {
+            if (images.length > 0) {
+                currentIndex = index;
+                imageDisplay.src = images[currentIndex].src;
+            }
+        }
+
+        function handleFileInput(event) {
+            const files = event.target.files;
+            images = [];
+
+            for (let i = 0; i < files.length && i < 5; i++) {
+                const file = files[i];
+                if (file.type.startsWith('image/')) {
+                    const img = new Image();
+                    img.src = URL.createObjectURL(file);
+                    images.push(img);
+                }
+            }
+
+            currentIndex = 0;
+            showImage(currentIndex);
+        }
+
+        function showPreviousImage() {
+            if (images.length > 0) {
+                currentIndex = (currentIndex - 1 + images.length) % images.length;
+                showImage(currentIndex);
+            }
+        }
+
+        function showNextImage() {
+            if (images.length > 0) {
+                currentIndex = (currentIndex + 1) % images.length;
+                showImage(currentIndex);
+            }
+        }
+
+        fileInput.addEventListener('change', handleFileInput);
+    </script>
+
+    <div class="canvas-container">
+        <img id="image-display2" src="" alt="Image2" width="400" height="350">
+    </div>
+    <input type="file" id="fileInput2" multiple>
+    <button id="prevButton2" onclick="showPreviousImage2()"><</button>
+    <button id="nextButton2" onclick="showNextImage2()">></button>
+
+    <script>
+        let images2 = [];
+        let currentIndex2 = 0;
+        const imageDisplay2 = document.getElementById('image-display2');
+        const fileInput2 = document.getElementById('fileInput2');
+
+        function showImage2(index2) {
+            if (images2.length > 0) {
+                currentIndex2 = index2;
+                imageDisplay2.src = images2[currentIndex2].src;
+            }
+        }
+
+        function handleFileInput2(event2) {
+            const files2 = event2.target.files;
+            images2 = [];
+
+            for (let j = 0; j < files2.length && j < 5; j++) {
+                const file2 = files2[j];
+                if (file2.type.startsWith('image/')) {
+                    const img2 = new Image();
+                    img2.src = URL.createObjectURL(file2);
+                    images2.push(img2);
+                }
+            }
+
+            currentIndex2 = 0;
+            showImage2(currentIndex2);
+        }
+
+        function showPreviousImage2() {
+            if (images2.length > 0) {
+                currentIndex2 = (currentIndex2 - 1 + images2.length) % images2.length;
+                showImage2(currentIndex2);
+            }
+        }
+
+        function showNextImage2() {
+            if (images2.length > 0) {
+                currentIndex2 = (currentIndex2 + 1) % images2.length;
+                showImage2(currentIndex2);
+            }
+        }
+
+        fileInput2.addEventListener('change', handleFileInput2);
+    </script>
+</body>
+</html>
